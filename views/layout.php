@@ -23,21 +23,35 @@ $grav_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email )
 <img src="<?php echo $grav_url; ?>" alt="" />
     </div>
 
-    <div id="nav">
-        <p>
-            <?php if ( $session->isAuthenticated() ): ?>
-                <a href="<?php echo $base_url; ?>/">ホーム</a>
-                <a href="<?php echo $base_url; ?>/user/index">アカウント</a>
-                <a href="<?php echo $base_url; ?>/user/signout">ログアウト</a>
-            <?php else: ?>
-                <a href="<?php echo $base_url; ?>/user/signin">ログイン</a>
-                <a href="<?php echo $base_url; ?>/user/signup">アカウント登録</a>
-            <?php endif; ?>
-        </p>
-    </div>
 
-    <div id="main">
-        <?php echo $_content; ?>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="<?php print $base_url; ?>/">Micropost</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <?php if ( $session->isAuthenticated() ): ?>
+      <li class="nav-item active">
+        <a class="nav-link" href="<?php print $base_url; ?>/">ホーム<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php print $base_url; ?>">アカウント</a>
+      </li>
+      <?php else: ?>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php print $base_url; ?>/user/signin">ログイン</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="<?php print $base_url; ?>/user/signup">アカウント登録</a>
+      </li>
+      <?php endif; ?>
+    </ul>
+  </div>
+</nav>
+
+    <div class="container">
+        <?php print $_content; ?>
     </div>
 </body>
 </html>

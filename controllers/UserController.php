@@ -2,12 +2,12 @@
 
 class UserController extends Controller
 {   
-    protected $auth_action  = array( 'index', 'signout' );
 
     public function signup()
     {
         return $this->render( array(
             'user_name' => '',
+            'email' => '',
             'password' => '',
             '_token'    => $this->generateCsrfToken( 'user/signup' ),
         ) );
@@ -33,6 +33,7 @@ class UserController extends Controller
         }
 
         $user_name = $this->request->getPost( 'user_name' );
+        $email  = $this->request->getPost( 'email' );
         $password  = $this->request->getPost( 'password' );
 
         $errors = array();
@@ -50,8 +51,12 @@ class UserController extends Controller
             $errors[] = "パスワードは5文字以上15文字以内でお願いします";        
         }
 
+        if ( ! strlen( $email ) ) {
+            $errors[] = "メールアドレスを入力してください";
+        }
+
         if ( count( $errors ) === 0 ) {
-            $this->db_manager->get( 'User' )->insert( $user_name, $password );
+            $this->db_manager->get( 'User' )->insert( $user_name, $password, $email );
             $this->session->setAuthenticated( true );
 
             $user = $this->db_manager->get( 'User' )->fetchByUserName( $user_name );
@@ -62,6 +67,7 @@ class UserController extends Controller
 
         return $this->render(array(
             'user_name' => $user_name,
+            'email'     => $email,
             'password'  => $password,
             'errors'    => $errors,
             '_token'    => $this->generateCsrfToken( 'user/signup' ),
@@ -83,20 +89,21 @@ class UserController extends Controller
 
         return $this->render( array(
             'user_name' => '',
+            'email'     => '',            
             'password'  => '',
-            '_token'    => $this->generateCsrfToken( 'user/signin' ),
+            '_token'    => $this->generateCsrfToken( '/user/signin' ),
         ) );
     }
 
     public function authenticate()
     {
-        if ( ! $this->request->isPost ) {
+        if ( ! $this->request->isPost() ) {
             return $this->redirect( '/user/index' );
         }
 
         $token = $this->request->getPost( '_token' );
-        if ( ! $this->checkCsrfToken( 'user/signin', $token ) ) {
-            return $this->redirect( 'user/signin' );
+        if ( ! $this->checkCsrfToken( '/user/signin', $token ) ) {
+            return $this->redirect( '/user/signin' );
         }
 
         $user_name = $this->request->getPost( 'user_name' );
@@ -112,20 +119,20 @@ class UserController extends Controller
             $errors[] = "パスワードを入力してください";
         }
 
-        if ( count( $errors ) > 0 ) {
+        if ( count( $errors ) === 0 ) {
             
             $user_repository = $this->db_manager->get( 'User' );
             $user = $user_repository->fetchByUserName( $user_name );
 
-            if ( ! $user 
-                || ( $user['password'] !== $user_repository->hashPassword( $password ) )
-            ){
-                $errors[] = "ユーザIDかパスワードが不正です";
-            } else {
+            if ( $user 
+                 && ( $user['password'] == password_verify(  $password , $user_repository->hashPassword( $password ) ) )
+            ){  
                 $this->session->setAuthenticated( true );
                 $this->session->set( 'user', $user );
 
-                return $this->redirect( '/' );
+                return $this->redirect( '/user/index' );
+            } else {
+                $errors[] = "ユーザIDかパスワードが不正です";
             }
         }
 
@@ -135,5 +142,21 @@ class UserController extends Controller
             'errors'    => $errors,
             '_token'    => $this->generateCsrfToken( 'user/signin' ),
         ), 'signin' );
+    }
+
+    public function follow( $params )
+    {
+        $following = null;
+        $current_user = $this->session->get( 'user' ); // ログインユーザのオブジェクトを取得
+        
+        if ( $current_user != $user['id'] ) {
+            $following = $this->db_manager->get( 'Following' ) 
+                ->isFollowing( $current_user['id'], $user['id'] );
+        }
+
+        return $this->render ( array(
+            'following' => $following,
+            '_token'    => $this->generateCsrfToken( '/user/follow' ),
+        ) );
     }
 }

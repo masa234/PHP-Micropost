@@ -1,19 +1,20 @@
 <?php 
 
-class UserRepository extends DbRepository
+class User extends DbRepository
 {
-    public function insert( $user_name, $password )
+    public function insert( $user_name, $email, $password )
     {
         $password = $this->hashPassword( $password );
         $now = new DateTime();
 
         $sql = "
-            INSERT INTO user( user_name, password, created_at )
-                VALUES( :user_name, :password, :created_at )
+            INSERT INTO user( user_name, email ,password, created_at )
+                VALUES( :user_name, :email, :password, :created_at )
             ";
         
         $stmt = $this->execute( $sql, array(
             ':user_name'   => $user_name,
+            ':email'       => $email,           
             ':password'    => $password,
             ':created_at'  => $now->format( 'Y-m-d H:i:s' ),
         ) );

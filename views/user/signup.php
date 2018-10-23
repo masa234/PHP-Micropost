@@ -10,18 +10,10 @@
     <?php endif; ?>
 
     <?php echo $this->render( 'user/register_form', array(
-        'user_name' => $user_name, 'password' => $password,
+        'user_name' => $user_name, 'email' => $email, 'password' => $password
     )); ?>
 
     <p>
         <input type="submit" class="btn btn-primary"></button>
     </p>
 </form>
-<?php 
-$email = "someone@somewhere.com";
-$default = "https://www.somewhere.com/homestar.jpg";
-$size = 40;
-
-$grav_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
-?>
-<img src="<?php echo $grav_url; ?>" alt="" />

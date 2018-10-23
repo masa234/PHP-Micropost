@@ -1,12 +1,13 @@
 <?php 
 
-class MicropostsController extends Controller
+class MicropostController extends Controller
 {
+
     public function index()
-    {
+    {      
         $user = $this->session->get( 'user' );
         $microposts = $this->db_manager->get( 'Microposts' )
-            ->fetchAllMicropostsByUserID( $user['id'] );
+            ->fetchAllMicroposts();
         
         return $this->render( array(
             'microposts'    => $microposts,
@@ -83,13 +84,5 @@ class MicropostsController extends Controller
         }
 
         return $this->render( array( 'micropost' => $micropost ) );
-    }
-    
-    public function signout()
-    {
-        $this->session->clear();
-        $this->session->setAuthenticated( false );
-
-        return $this->redirect( '/user/signin' );
     }
 }

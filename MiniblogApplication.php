@@ -13,15 +13,15 @@ class MiniblogApplication extends Application
     {
         return array(
             '/'
-                => array( 'controller' => 'microposts', 'action' => 'index' ),
+                => array( 'controller' => 'micropost', 'action' => 'index' ),
             '/member/:user_name'
-                => array( 'controller' => 'microposts', 'action' => 'member' ),
+                => array( 'controller' => 'micropost', 'action' => 'member' ),
             '/member/:user_name/microposts/:id'
-                => array( 'controller' => 'microposts', 'action' => 'show' ),
+                => array( 'controller' => 'micropost', 'action' => 'show' ),
             '/user/:action'
                 => array( 'controller' => 'user' ),
-            '/microposts/post'
-                => array( 'controller' => 'microposts', 'action' => 'post' ),
+            '/micropost/post'
+                => array( 'controller' => 'micropost', 'action' => 'post' ),
             '/follow'
                 => array( 'controller' => 'user', 'action' => 'follow' ),
         );
