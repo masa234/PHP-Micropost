@@ -15,6 +15,7 @@ abstract class Model
         $this->con = $con;  
     }
 
+    // 実行
     public function execute( $sql, $params = array() )
     {
         $stmt = $this->con->prepare( $sql );
