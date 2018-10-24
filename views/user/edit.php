@@ -1,11 +1,8 @@
-<?php $this->setLayoutVar( 'title', 'ログイン' ); ?>
+<?php $this->setLayoutVar( 'title', 'ユーザ情報編集' ); ?>
 
-<h2>ログイン</h2>
+<h2>ユーザ情報編集</h2>
 
-<p>
-    <a href="<?php print $base_url; ?>/user/signup">新規ユーザ登録</a>
-</p>
-<form action="<?php print $base_url; ?>/user/authenticate" method="post">
+<form action="<?php print $base_url; ?>/user/update" method="post">
     <input type="hidden" name="_token" value="<?php print $this->escape( $_token ); ?>" />
 
     <?php if ( isset( $errors ) && count( $errors ) > 0 ): ?>
@@ -17,6 +14,6 @@
     )); ?> 
 
     <p>
-        <input type="submit" class="btn btn-info" value="ログイン">
+        <input type="submit" class="btn btn-info" value="ユーザ情報編集">
     </p>
 </form>

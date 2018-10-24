@@ -10,3 +10,4 @@
         <?php print $this->escape( $micropost['created_at'] ); ?>
     </div>
 </div>
+<hr>

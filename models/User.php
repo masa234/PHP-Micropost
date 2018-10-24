@@ -2,6 +2,7 @@
 
 class User extends DbRepository
 {
+    // ユーザ追加
     public function insert( $user_name, $email, $password )
     {
         $password = $this->hashPassword( $password );
@@ -20,21 +21,43 @@ class User extends DbRepository
         ) );
     }
 
+    public function update(  $current_user_id ,$user_name, $email, $password )
+    {   
+        $password = $this->hashPassword( $password );
+
+        $sql = " 
+            UPDATE user
+                SET user_name = :user_name,
+                    email = :email,
+                    password = :password
+                    WHERE id = $current_user_id;
+        ";
+
+        $stmt = $this->execute( $sql, array(
+            ':user_name'   => $user_name,
+            ':email'       => $email,           
+            ':password'    => $password,
+        ) ); 
+    }
+
     public function hashPassword( $password )
     {
         return password_hash( $password , PASSWORD_DEFAULT );
     }
 
-    public function fetchByUserName( $user_name )
+    // 与えられたユーザ名、パスワードのユーザのデータを連想配列で返却
+    public function fetchByUserNameAndEmail( $user_name, $email )
     {
         $sql = "
             SELECT * FROM user 
                 WHERE user_name = :user_name
+                    AND email = :email
             ";
 
-        return $this->fetch( $sql, array( ':user_name' => $user_name ) );
+        return $this->fetch( $sql, array( ':user_name' => $user_name, ':email' => $email ) );
     }
 
+    // 入力されたユーザ名が一意であるかを判定する
     public function isUniqueUserName( $user_name )
     {
         $sql = "

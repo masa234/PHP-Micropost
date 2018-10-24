@@ -38,6 +38,12 @@ $grav_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email )
       <li class="nav-item">
         <a class="nav-link" href="<?php print $base_url; ?>">アカウント</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php print $base_url; ?>/user/edit">ユーザ編集</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php print $base_url; ?>/user/signout">ログアウト</a>
+      </li>
       <?php else: ?>
       <li class="nav-item">
         <a class="nav-link" href="<?php print $base_url; ?>/user/signin">ログイン</a>
