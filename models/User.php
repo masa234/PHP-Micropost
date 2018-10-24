@@ -1,6 +1,6 @@
 <?php 
 
-class User extends DbRepository
+class User extends Model
 {
     // ユーザ追加
     public function insert( $user_name, $email, $password )

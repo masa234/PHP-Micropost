@@ -6,7 +6,7 @@ class MicropostController extends Controller
     public function index()
     {      
         $user = $this->session->get( 'user' );
-        $microposts = $this->db_manager->get( 'Microposts' )
+        $microposts = $this->db_manager->get( 'Micropost' )
             ->fetchAllMicroposts();
         
         return $this->render( array(
@@ -39,13 +39,13 @@ class MicropostController extends Controller
 
         if ( count( $errors ) === 0 ) {
             $user = $this->session->get( 'user' );
-            $this->db_manager->get( 'Microposts' )->insert( $user['id'], $content );
+            $this->db_manager->get( 'Micropost' )->insert( $user['id'], $content );
 
             return $this->redirect( '/' );
         }
 
         $user = $this->session->get( 'user' );
-        $microposts = $this->db_manager->get( 'Microposts' )
+        $microposts = $this->db_manager->get( 'Micropost' )
             ->fetchAllMicroposts( $user['id'] );
 
         return $this->render( array(
@@ -65,7 +65,7 @@ class MicropostController extends Controller
             $this->forward404();
         }
 
-        $microposts = $this->db_manager->get( 'Microposts' )
+        $microposts = $this->db_manager->get( 'Micropost' )
             ->fetchAllMicropostsByUserID( $user['id'] );
         
         return $this->render( array(
@@ -76,7 +76,7 @@ class MicropostController extends Controller
 
     public function show( $params )
     {
-        $micropost = $this->db_manager->get( 'Microposts' )
+        $micropost = $this->db_manager->get( 'Micropost' )
             ->fetchByIdAndUserName( $params['id'], $params['user_name'] );
         
         if ( ! $micropost ) {

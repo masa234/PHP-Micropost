@@ -1,10 +1,5 @@
 <?php
 
-/**
- * DbManager.
- *
- * @author Katsuhiro Ogawa <fivestar@nequal.jp>
- */
 class DbManager
 {
     protected $connections = array();

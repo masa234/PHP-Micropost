@@ -218,7 +218,7 @@ class UserController extends Controller
             'password'  => $password,
             'errors'    => $errors,
             '_token'    => $this->generateCsrfToken( 'user/edit' ),
-        ), 'edit' );
+        ), 'edit' );    
     }
 
     // public function follow( $params )

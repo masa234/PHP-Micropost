@@ -1,6 +1,6 @@
 <?php 
 
-class Microposts extends DbRepository
+class Micropost extends Model
 {
     public function insert( $user_id, $content )
     {

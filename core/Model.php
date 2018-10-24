@@ -1,9 +1,10 @@
 <?php
 
-abstract class DbRepository
+abstract class Model
 {
     protected $con;
 
+    // コンストラクタ
     public function __construct( $con )
     {
         $this->setConnection( $con );
@@ -11,7 +12,7 @@ abstract class DbRepository
 
     public function setConnection( $con )
     {
-        $this->con = $con;
+        $this->con = $con;  
     }
 
     public function execute( $sql, $params = array() )

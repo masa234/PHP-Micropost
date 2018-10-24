@@ -1,10 +1,5 @@
 <?php
  
-/**
- * View.
- *
- * @author Katsuhiro Ogawa <fivestar@nequal.jp>
- */
 class View
 {
     protected $base_dir;
