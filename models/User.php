@@ -29,19 +29,23 @@ class User extends Model
         ) );
     }
 
-    public function update(  $current_user_id ,$user_name, $email )
+    public function update(  $current_user_id ,$user_name, $email, $password )
     {   
+        $password = $this->hashPassword( $password );
 
         $sql = " 
             UPDATE user
                 SET user_name = :user_name,
-                    email = :email
-                    WHERE id = $current_user_id;
+                    email = :email,
+                    password = :password
+                    WHERE id = :curent_user_id;
         ";
 
         $stmt = $this->execute( $sql, array(
-            ':user_name'   => $user_name,
-            ':email'       => $email,           
+            ':user_name'      => $user_name,
+            ':email'          => $email,   
+            ':password'       => $password,     
+            ':curent_user_id' => $current_user_id,
         ) ); 
     }
 

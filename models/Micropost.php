@@ -7,13 +7,13 @@ class Micropost extends Model
         $now = new DateTime();
         
         $sql = "
-            INSERT INTO micropost( user_id, body, created_at ) 
-                VALUES( :user_id, :body, :created_at )   
+            INSERT INTO micropost( user_id, content, created_at ) 
+                VALUES( :user_id, :content, :created_at )   
             ";
 
         $stmt = $this->execute( $sql, array(
             ':user_id'    => $user_id,
-            ':body'       => $content,
+            ':content'       => $content,
             ':created_at' => $now->format( 'Y-m-d H:i:s' ),
         ) );
     }
@@ -25,7 +25,7 @@ class Micropost extends Model
             SELECT  
                 micropost.id,
                 micropost.user_id, 
-                micropost.body, 
+                micropost.content, 
                 micropost.created_at,
                 user.user_name,
                 user.email
@@ -41,24 +41,48 @@ class Micropost extends Model
 
     // 特定のユーザのmicropostを取得
     public function fetchAllMicropostsByUserID( $user_id ) 
+    {   
+        $sql = "
+            SELECT  
+                micropost.id,
+                micropost.user_id, 
+                micropost.content, 
+                micropost.created_at,
+                user.user_name,
+                user.email
+            FROM 
+                micropost LEFT JOIN user
+            ON 
+                micropost.user_id = user.id
+            WHERE 
+                micropost.user_id = :user_id
+                    ORDER BY micropost.created_at DESC
+            ";
+
+        return $this->fetchAll( $sql, array( ':user_id' => $user_id ) );
+    }
+
+    public function fetchMicropostById( $micropost_id )
     {
         $sql = "
             SELECT  
                 micropost.id,
                 micropost.user_id, 
-                micropost.body, 
+                micropost.content, 
                 micropost.created_at,
                 user.user_name,
                 user.email
             FROM 
-                micropost INNER JOIN user
+                micropost LEFT JOIN user
             ON 
-                micropost.user_id = :user_id
+                micropost.user_id = user.id
+            WHERE 
+                micropost.id = :micropost_id
                     ORDER BY micropost.created_at DESC
             ";
-        
-        return $this->fetchAll( $sql, array( ':user_id' => $user_id ) );
-    }
+
+        return $this->fetch( $sql, array( ':micropost_id' => $micropost_id ) );
+    }   
     
     // ログインユーザの投稿かどうかを判定
     public function isCurrentuserMicropost( $current_user_id, $micropost_id )

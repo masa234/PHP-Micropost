@@ -164,6 +164,7 @@ class UserController extends Controller
             $this->forward404();
         }
 
+        var_dump( $params['id'] );
         $microposts = $this->db_manager->get( 'Micropost' )
             ->fetchAllMicropostsByUserID( $params['id'] );
 
@@ -183,6 +184,7 @@ class UserController extends Controller
         return $this->render ( array(
             'user_name' => $current_user['user_name'],
             'email'     => $current_user['email'],
+            'password'     => $current_user['password'],
             '_token'    => $this->generateCsrfToken( 'user/edit' ),
         ) );
     }
@@ -220,7 +222,7 @@ class UserController extends Controller
         if ( count( $errors ) == 0 ) {
 
             $current_user = $this->session->get( 'user' );
-            $this->db_manager->get( 'User' )->update( $current_user['id'], $user_name, $email );
+            $this->db_manager->get( 'User' )->update( $current_user['id'], $user_name, $email, $password );
 
             $user = $this->db_manager->get( 'User' )->fetchByUserNameAndEmail( $user_name, $email );
             $this->session->set( 'user', $user );
@@ -231,7 +233,8 @@ class UserController extends Controller
             'user_name' => $user_name,
             'email'     => $email,
             'errors'    => $errors,
-            'message'    => $message,
+            'password'  => $password,
+            'message'   => $message ? $message : '',
             '_token'    => $this->generateCsrfToken( 'user/edit' ),
         ), 'edit' );    
     }
