@@ -1,6 +1,6 @@
 <?php
 
-class Following extends DbRepository
+class Following extends Model
 {
     
 }

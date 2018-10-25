@@ -35,11 +35,10 @@ class Micropost extends Model
     public function fetchAllMicropostsByUserID( $user_id ) 
     {
         $sql = "
-            SELECT a.*, u.user_name
-                FROM micropost a 
-                    LEFT JOIN user u ON a.user_id = u.id
-                WHERE u.id = :user_id
-                ORDER BY a.created_at DESC
+            SELECT * FROM micropost 
+                INNER JOIN user
+                    ON micropost.user_id = :user_id
+                        ORDER BY micropost.created_at DESC
             ";
         
         return $this->fetchAll( $sql, array( ':user_id' => $user_id ) );

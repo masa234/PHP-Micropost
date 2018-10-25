@@ -74,12 +74,12 @@ class UserController extends Controller
         ), 'signup');
     }
 
-    public function index()
-    {
-        $user = $this->session->get( 'user' );
+    // public function index()
+    // {
+    //     $user = $this->session->get( 'user' );
 
-        return $this->render( array( 'user' => $user ) );
-    }
+    //     return $this->render( array( 'user' => $user ) );
+    // }
 
     public function signin()
     {
@@ -154,6 +154,26 @@ class UserController extends Controller
         ), 'signin' );
     }
 
+     // ユーザ詳細ページ
+     public function show( $params )
+     {  
+        $user_model = $this->db_manager->get( 'User' );   
+        $user =  $user_model->fetchByUserById( $params['id'] );
+
+        if ( ! $user ) {
+            $this->forward404();
+        }
+
+        $microposts = $this->db_manager->get( 'Micropost' )
+            ->fetchAllMicropostsByUserID( $params['id'] );
+
+         return $this->render ( array(
+             'user_name'    => $user['user_name'],
+             'microposts'   => $microposts,
+             'gravator_url' => $user_model->getGravatarUrl( $user['email'] ),
+         ) );
+     }   
+
     // 現在ログイン中のユーザの情報編集
     public function edit()
     {
@@ -180,6 +200,7 @@ class UserController extends Controller
             return $this->redirect( '/user/edit' );
         }
 
+        $current_user = $this->session->get( 'user' );
         $user_name = $this->request->getPost( 'user_name' );
         $email = $this->request->getPost( 'email' );
         $password = $this->request->getPost( 'password' );
@@ -188,7 +209,8 @@ class UserController extends Controller
 
         if ( ! $user_name  ) {
             $errors[] = "ユーザ名を入力してください";
-        } else if ( ! $this->db_manager->get( 'User' )->isUniqueUserName( $user_name ) ) {
+        } else if ( ! $this->db_manager->get( 'User' )->isUniqueUserName( $user_name )
+                    && $current_user['user_name'] != $user_name ) {
             $errors[] = "ユーザ名は既に登録されています";
         }
 

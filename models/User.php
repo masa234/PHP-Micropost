@@ -1,7 +1,17 @@
 <?php 
 
 class User extends Model
-{
+{   
+
+    public function getGravatarUrl( $email, $size = 100 ) 
+    {   
+        var_dump( $email );
+        $default = "https://www.somewhere.com/homestar.jpg";
+        $gravatar_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
+    
+        return $gravatar_url;
+    }
+
     // ユーザ追加
     public function insert( $user_name, $email, $password )
     {
@@ -43,6 +53,17 @@ class User extends Model
     public function hashPassword( $password )
     {
         return password_hash( $password , PASSWORD_DEFAULT );
+    }
+
+    // 与えられたIDのユーザのデータを連想配列で返却
+    public function fetchByUserById( $user_id )
+    {
+        $sql = "
+            SELECT * FROM user 
+                WHERE id = :user_id
+            ";
+
+        return $this->fetch( $sql, array( ':user_id' => $user_id ) );
     }
 
     // 与えられたユーザ名、パスワードのユーザのデータを連想配列で返却

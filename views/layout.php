@@ -41,6 +41,10 @@ $grav_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email )
       <li class="nav-item">
         <a class="nav-link" href="<?php print $base_url; ?>/user/edit">ユーザ編集</a>
       </li>
+      <?php $current_user = $session->get( 'user' ); ?>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php print $base_url; ?>/user/show/<?php print( $current_user['id'] ); ?>">マイページ</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="<?php print $base_url; ?>/user/signout">ログアウト</a>
       </li>

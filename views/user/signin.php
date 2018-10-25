@@ -17,6 +17,6 @@
     )); ?> 
 
     <p>
-        <input type="submit" class="btn btn-info" value="ログイン">
+        <input type="submit" class="btn btn-primary" value="ログイン">
     </p>
 </form>

@@ -1,5 +1,5 @@
 
-<div class="card">
+<div class="card border-info text-white bg-dark mb-3">
     <div class="card-body">
         <div class="form-group">
             <label for="user_name">ユーザ名</label>
