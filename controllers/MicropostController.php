@@ -33,8 +33,8 @@ class MicropostController extends Controller
 
         if ( ! strlen( $content ) ) {
             $errors[] = '本文を入力してください'; 
-        } else if ( strlen( $content ) > 200 ) {
-            $errors[] = '本文は200文字以内で入力してください';
+        } else if ( strlen( $content ) > 140 ) {
+            $errors[] = '本文は140文字以内で入力してください';
         }
 
         if ( count( $errors ) === 0 ) {
@@ -56,8 +56,33 @@ class MicropostController extends Controller
         ) , 'index' );
     }
 
+    public function edit( $params )
+    {   
+        
+        $current_user = $this->session->get( 'user' );
+
+        // 編集しようとした投稿がログインユーザのものか判定
+        $micropost = $this->db_manager->get( 'Micropost' )
+            ->isCurrentuserMicropost( $current_user['id'], $params['id'] );
+
+        if ( ! $micropost ) {
+            $this->forward404();
+        }
+
+        $micropost = $this->db_manager->get( 'Micropost' )
+            ->fetchMicropostById( $params['id'] );
+
+        return $this->render ( array(
+            'content'    => $micropost['content'],
+            'user_name'  => $micropost['user_name'],
+            'created_at' => $micropost['created_at'],
+            '_token'    => $this->generateCsrfToken( 'micropost/edit' ),
+        ) );  
+    }
+
     public function delete( $params )
     {   
+        
         $current_user = $this->session->get( 'user' );
 
         $micropost_model = $this->db_manager->get( 'Micropost' );

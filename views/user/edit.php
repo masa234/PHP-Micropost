@@ -14,7 +14,7 @@
     <?php endif; ?>
 
     <?php echo $this->render( 'user/_register_form', array(
-        'user_name' => $user_name, 'email' => $email, 'password' => ''
+        'user_name' => $user_name, 'email' => $email, 'password' => $password,
     )); ?> 
 
     <p>

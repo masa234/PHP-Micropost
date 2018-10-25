@@ -1,5 +1,5 @@
 <?php $this->setLayoutVar( 'title', 'ユーザ情報編集' ); ?>
-<h2>ユーザ詳細画面</h2>
+<h2><?php print $this->escape( $user_name ) ?></h2>
 
 <div class="card">
     <div class="card-body">
