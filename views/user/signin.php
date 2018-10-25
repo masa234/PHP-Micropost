@@ -14,7 +14,7 @@
 
     <?php echo $this->render( 'user/_register_form', array(
         'user_name' => $user_name, 'email' => $email, 'password' => $password
-    )); ?> 
+    )); ?>  
 
     <p>
         <input type="submit" class="btn btn-primary" value="ログイン">

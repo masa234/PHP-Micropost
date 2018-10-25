@@ -73,11 +73,54 @@ class MicropostController extends Controller
             ->fetchMicropostById( $params['id'] );
 
         return $this->render ( array(
-            'content'    => $micropost['content'],
-            'user_name'  => $micropost['user_name'],
-            'created_at' => $micropost['created_at'],
+            'micropost' => $micropost,
             '_token'    => $this->generateCsrfToken( 'micropost/edit' ),
         ) );  
+    }
+
+    public function update( $params )
+    {
+        if ( ! $this->request->isPost() ) {
+            $this->forward404();
+        }
+
+        $token = $this->request->getPost( '_token' );
+        if ( ! $this->checkCsrfToken( 'micropost/edit', $token ) ) {
+            return $this->redirect( '/' );
+        }
+
+        $content = $this->request->getPost( 'content' );
+
+        $errors = array();
+
+        if ( ! $content )  {
+            $errors[] = "本文を入力してください"; 
+        } else if ( strlen( $content ) > 140 ) {
+            $errors[] = "本文は140文字以内で入力してください";         
+        }
+
+        $micropost_model = $this->db_manager->get( 'Micropost' );
+        $current_user = $this->session->get( 'user' );
+
+        if ( count( $errors ) === 0 
+            && $micropost_model->isCurrentuserMicropost( $current_user['id'], $params['id'] ) ) {
+            // 入力チェックを通過しかつログインユーザの投稿だった場合、投稿の更新処理を行う
+            $this->db_manager->get( 'Micropost' )
+                ->update( $current_user['id'], $params['id'], $content );
+            $message = '投稿の更新に成功しました';
+        } else {
+            $message = '';
+        }
+            
+        $micropost = $micropost_model->fetchMicropostById( $params['id'] );
+        
+        // 投稿失敗時、編集画面を表示
+        return $this->render( array (   
+            'micropost' => $micropost,
+            'errors'   => $errors,
+            'message'   => $message,
+            '_token'    => $this->generateCsrfToken( 'micropost/edit' ),
+        ), 'edit' );
     }
 
     public function delete( $params )

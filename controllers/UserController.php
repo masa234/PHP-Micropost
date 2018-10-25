@@ -227,6 +227,8 @@ class UserController extends Controller
             $user = $this->db_manager->get( 'User' )->fetchByUserNameAndEmail( $user_name, $email );
             $this->session->set( 'user', $user );
             $message = 'ユーザ情報の編集に成功しました';
+        } else {
+            $message = '';
         }
 
         return $this->render( array(
@@ -234,7 +236,7 @@ class UserController extends Controller
             'email'     => $email,
             'errors'    => $errors,
             'password'  => $password,
-            'message'   => $message ? $message : '',
+            'message'   => $message,
             '_token'    => $this->generateCsrfToken( 'user/edit' ),
         ), 'edit' );    
     }

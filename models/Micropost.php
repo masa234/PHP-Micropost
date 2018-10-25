@@ -102,15 +102,34 @@ class Micropost extends Model
         return false;
     }
 
-    public function delete( $current_user_id, $micropost_id )
+    public function update( $current_user_id, $micropost_id, $content )
     {
         $sql = "
-            DELETE FROM micropost 
-                WHERE id = :micropost_id    
+            UPDATE micropost 
+                SET content = :content
+                WHERE id = :micropost_id
+                    AND user_id = :current_user_id
             ";
-        
+
+        $stmt = $this->execute( $sql, array(
+            ':content'        => $content,
+            ':micropost_id'   => $micropost_id,
+            ':current_user_id'=> $current_user_id,
+        ) );
+    }
+
+    public function delete( $current_user_id, $micropost_id )
+    {   
+        $sql = "
+            DELETE FROM micropost 
+                WHERE id = :micropost_id 
+                AND
+                user_id  = :current_user_id  
+            ";
+
         $stmt = $this->execute( $sql, array(
             ':micropost_id'    => $micropost_id,
+            ':current_user_id'=> $current_user_id,
         ) );
     }
 }
