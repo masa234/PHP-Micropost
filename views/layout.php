@@ -4,26 +4,30 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><?php if (isset($title)): echo $this->escape($title) . ' - ';
-        endif; ?>Mini Blog</title>
+        endif; ?>Micropost</title>
+      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <script type="text/javascript">
+      function check(){
 
+          if(window.confirm('削除します よろしいですか')){
+      
+            return true;
+
+          }
+
+          else{
+            
+            return false;
+
+          }
+      }
+    </script>    
     <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/application.css" />
 </head>
 <body>
-    <?php var_dump( $session->get( 'user' ) ); ?>
-    <div id="header">
-        <h1><a href="<?php echo $base_url; ?>/">Micropost</a></h1>
-        <?php 
-$email = "bfmt1250081@gmail.com";
-$default = "https://www.somewhere.com/homestar.jpg";
-$size = 40;
-
-$grav_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
-?>
-<img src="<?php echo $grav_url; ?>" alt="" />
-    </div>
-
-
+<?php var_dump( $session->get( 'user' ) ); ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="<?php print $base_url; ?>/">Micropost</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

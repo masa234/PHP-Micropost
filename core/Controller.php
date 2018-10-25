@@ -53,6 +53,7 @@ abstract class Controller
             'request'  => $this->request,
             'base_url' => $this->request->getBaseUrl(),
             'session'  => $this->session,
+            'db_manager'  => $this->db_manager,
         );
 
         $view = new View($this->application->getViewDir(), $defaults);

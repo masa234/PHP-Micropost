@@ -5,9 +5,7 @@ class User extends Model
 
     public function getGravatarUrl( $email, $size = 100 ) 
     {   
-        var_dump( $email );
-        $default = "https://www.somewhere.com/homestar.jpg";
-        $gravatar_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
+        $gravatar_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) .  "&s=" . $size;
     
         return $gravatar_url;
     }
@@ -31,22 +29,19 @@ class User extends Model
         ) );
     }
 
-    public function update(  $current_user_id ,$user_name, $email, $password )
+    public function update(  $current_user_id ,$user_name, $email )
     {   
-        $password = $this->hashPassword( $password );
 
         $sql = " 
             UPDATE user
                 SET user_name = :user_name,
-                    email = :email,
-                    password = :password
+                    email = :email
                     WHERE id = $current_user_id;
         ";
 
         $stmt = $this->execute( $sql, array(
             ':user_name'   => $user_name,
             ':email'       => $email,           
-            ':password'    => $password,
         ) ); 
     }
 
