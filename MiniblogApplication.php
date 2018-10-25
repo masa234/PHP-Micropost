@@ -14,8 +14,10 @@ class MiniblogApplication extends Application
         return array(
             '/'
                 => array( 'controller' => 'micropost', 'action' => 'index' ),
-            '/user/show/:id'
-                => array( 'controller' => 'user', 'action' => 'show' ),
+            '/user/:action/:id'
+                => array( 'controller' => 'user' ),
+            '/micropost/:action/:id'
+                => array( 'controller' => 'micropost' ),
             '/member/:user_name/microposts/:id'
                 => array( 'controller' => 'micropost', 'action' => 'show' ),
             '/user/:action'

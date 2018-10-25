@@ -9,10 +9,10 @@
     <input type="hidden" name="_token" value="<?php print $this->escape( $_token ); ?>" />
 
     <?php if ( isset( $errors ) && count( $errors ) > 0 ): ?>
-    <?php print $this->render( 'errors', array( 'errors' => $errors ) ); ?>
+    <?php print $this->render( '_errors', array( 'errors' => $errors ) ); ?>
     <?php endif; ?>
 
-    <?php echo $this->render( 'user/register_form', array(
+    <?php echo $this->render( 'user/_register_form', array(
         'user_name' => $user_name, 'email' => $email, 'password' => $password
     )); ?> 
 

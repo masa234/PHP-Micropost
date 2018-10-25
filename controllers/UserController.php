@@ -183,7 +183,6 @@ class UserController extends Controller
         return $this->render ( array(
             'user_name' => $current_user['user_name'],
             'email'     => $current_user['email'],
-            'password'  => $current_user['password'],
             '_token'    => $this->generateCsrfToken( 'user/edit' ),
         ) );
     }
@@ -218,27 +217,21 @@ class UserController extends Controller
             $errors[] = "メールアドレスを入力してください";
         }
 
-        if( ! strlen( $password ) ) {
-            $errors[] = "パスワードが未入力です";
-        } else if ( strlen( $password ) < 5 
-                || strlen( $password ) > 15 ) {
-            $errors[] = "パスワードは5文字以上15文字以内でお願いします";        
-        }
-
         if ( count( $errors ) == 0 ) {
 
             $current_user = $this->session->get( 'user' );
-            $this->db_manager->get( 'User' )->update( $current_user['id'], $user_name, $email, $password );
+            $this->db_manager->get( 'User' )->update( $current_user['id'], $user_name, $email );
 
             $user = $this->db_manager->get( 'User' )->fetchByUserNameAndEmail( $user_name, $email );
             $this->session->set( 'user', $user );
+            $message = 'ユーザ情報の編集に成功しました';
         }
 
         return $this->render( array(
             'user_name' => $user_name,
             'email'     => $email,
-            'password'  => $password,
             'errors'    => $errors,
+            'message'    => $message,
             '_token'    => $this->generateCsrfToken( 'user/edit' ),
         ), 'edit' );    
     }

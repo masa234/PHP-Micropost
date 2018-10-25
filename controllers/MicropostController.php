@@ -56,33 +56,25 @@ class MicropostController extends Controller
         ) , 'index' );
     }
 
-    public function member( $params )
-    {
-        $user = $this->db_manager->get( 'User' )
-            ->fetchByUserName( $params['user_name'] );
+    public function delete( $params )
+    {   
+        $current_user = $this->session->get( 'user' );
 
-        if ( ! $user ) {
-            $this->forward404();
-        }
-
-        $microposts = $this->db_manager->get( 'Micropost' )
-            ->fetchAllMicropostsByUserID( $user['id'] );
-        
-        return $this->render( array(
-            'user'          => $user,
-            'microposts'    => $microposts
-        ) );
-    }
-
-    public function show( $params )
-    {
-        $micropost = $this->db_manager->get( 'Micropost' )
-            ->fetchByIdAndUserName( $params['id'], $params['user_name'] );
-        
+        $micropost_model = $this->db_manager->get( 'Micropost' );
+        // 削除しようとした投稿がログインユーザのものか判定
+        $micropost = $micropost_model->isCurrentuserMicropost( $current_user['id'], $params['id'] );
+ 
         if ( ! $micropost ) {
             $this->forward404();
         }
 
-        return $this->render( array( 'micropost' => $micropost ) );
+        $micropost_model->delete( $current_user['id'], $params['id'] ); 
+        $message = '削除が完了しました';
+
+        return $this->render( array (
+            'microposts' => $micropost_model->fetchAllMicroposts(), 
+            'content'       => '',
+            'message' => $message, 
+        ), 'index' );
     }
 }
