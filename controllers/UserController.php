@@ -236,7 +236,11 @@ class UserController extends Controller
             'email'     => $email,
             'errors'    => $errors,
             'password'  => $password,
+<<<<<<< HEAD
             'message'   => $message,
+=======
+            'message'   => $message ? $message : '',
+>>>>>>> 2ccd99e5fbdc06e6007a2de694fad0e8e9fc195d
             '_token'    => $this->generateCsrfToken( 'user/edit' ),
         ), 'edit' );    
     }
