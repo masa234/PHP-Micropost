@@ -11,6 +11,23 @@
         <a href="<?php print $base_url; ?>/micropost/show/<?php print $this->escape( $micropost['id'] ); ?>" > 
         <?php print $this->escape( $micropost['created_at'] ); ?>
         <?php $current_user = $session->get( 'user' ) ?>
+        <?php $relationship_model = $db_manager->get( 'Relationship' ) ?>
+        <!-- ログインユーザ自身の場合はフォローボタンを表示しない -->
+        <?php if ( $current_user['id'] != $micropost['user_id'] ): ?>
+        <?php if ( $relationship_model->isFollowing( $current_user['id'], $micropost['user_id'] ) ): ?>
+        <form action="<?php print $base_url; ?>/relationship/delete/<?php print $this->escape( $micropost['user_id']  ); ?>"  method="post">
+            <input type="hidden" name="_token" value="<?php print $this->escape( $_token ); ?>" />
+            <input type="hidden" name="unfollowing_user_id" value="<?php echo $this->escape( $micropost['user_id'] ); ?>" />
+            <input type="submit" class="btn btn-danger" value="<?php print $this->escape( $micropost['user_name'] ); ?>のフォローを外す">
+        </form>
+        <?php else: ?>
+        <form action="<?php print $base_url; ?>/relationship/insert/<?php print $this->escape( $micropost['user_id']  ); ?>"  method="post">
+            <input type="hidden" name="_token" value="<?php print $this->escape( $_token ); ?>" />
+            <input type="hidden" name="following_user_id" value="<?php echo $this->escape( $micropost['user_id'] ); ?>" />
+            <input type="submit" class="btn btn-success" value="<?php print $this->escape( $micropost['user_name'] ); ?>をフォローする">
+        </form>
+        <?php endif; ?>
+        <?php endif; ?>
         <!-- ログインユーザの投稿にだけ、編集ボタン,編集ボタンを追加 -->
         <?php if ( $micropost['user_id'] == $current_user['id']  ): ?>
         <a href="<?php print $base_url; ?>/micropost/edit/<?php print $this->escape( $micropost['id'] ); ?>">

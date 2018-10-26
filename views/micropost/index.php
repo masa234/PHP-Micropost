@@ -21,6 +21,6 @@
 
 <div id="microposts">
     <?php foreach ( $microposts as $micropost ): ?>
-    <?php print $this->render( 'micropost/_micropost', array( 'micropost' => $micropost ) ); ?>
+    <?php print $this->render( 'micropost/_micropost', array( 'micropost' => $micropost, '_token' => $_token ) ); ?>
     <?php endforeach; ?>
 </div>

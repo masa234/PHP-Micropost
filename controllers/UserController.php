@@ -74,17 +74,10 @@ class UserController extends Controller
         ), 'signup');
     }
 
-    // public function index()
-    // {
-    //     $user = $this->session->get( 'user' );
-
-    //     return $this->render( array( 'user' => $user ) );
-    // }
-
     public function signin()
     {
         if ( $this->session->isAuthenticated() ) {
-            return $this->redirect( '/user/index' );
+            return $this->redirect( '/' );
         }
 
         return $this->render( array(
@@ -123,9 +116,6 @@ class UserController extends Controller
 
         if( ! strlen( $password ) ) {
             $errors[] = "パスワードが未入力です";
-        } else if ( strlen( $password ) < 5 
-                || strlen( $password ) > 15 ) {
-            $errors[] = "パスワードは5文字以上15文字以内でお願いします";        
         }
 
         if ( count( $errors ) === 0 ) {
@@ -139,7 +129,7 @@ class UserController extends Controller
                 $this->session->setAuthenticated( true );
                 $this->session->set( 'user', $user );
 
-                return $this->redirect( '/user/index' );
+                return $this->redirect( '/' );
             } else {
                 $errors[] = "入力が誤っています";
             }
@@ -236,11 +226,7 @@ class UserController extends Controller
             'email'     => $email,
             'errors'    => $errors,
             'password'  => $password,
-<<<<<<< HEAD
             'message'   => $message,
-=======
-            'message'   => $message ? $message : '',
->>>>>>> 2ccd99e5fbdc06e6007a2de694fad0e8e9fc195d
             '_token'    => $this->generateCsrfToken( 'user/edit' ),
         ), 'edit' );    
     }

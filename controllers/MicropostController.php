@@ -5,14 +5,14 @@ class MicropostController extends Controller
 
     public function index()
     {      
-        $user = $this->session->get( 'user' );
+
         $microposts = $this->db_manager->get( 'Micropost' )
             ->fetchAllMicroposts();
         
         return $this->render( array(
             'microposts'    => $microposts,
             'content'       => '',
-            '_token'        => $this->generateCsrfToken( 'microposts/post' ),
+            '_token'        => $this->generateCsrfToken( 'micropost/post' ),
         ) );
     }
 
@@ -23,7 +23,7 @@ class MicropostController extends Controller
         }
 
         $token = $this->request->getPost( '_token' );
-        if ( ! $this->checkCsrfToken( 'microposts/post', $token ) ) {
+        if ( ! $this->checkCsrfToken( 'micropost/post', $token ) ) {
             return $this->redirect( '/' );
         }
 
@@ -73,18 +73,11 @@ class MicropostController extends Controller
             ->fetchMicropostById( $params['id'] );
 
         return $this->render ( array(
-<<<<<<< HEAD
             'micropost' => $micropost,
-=======
-            'content'    => $micropost['content'],
-            'user_name'  => $micropost['user_name'],
-            'created_at' => $micropost['created_at'],
->>>>>>> 2ccd99e5fbdc06e6007a2de694fad0e8e9fc195d
             '_token'    => $this->generateCsrfToken( 'micropost/edit' ),
         ) );  
     }
 
-<<<<<<< HEAD
     public function update( $params )
     {
         if ( ! $this->request->isPost() ) {
@@ -100,7 +93,7 @@ class MicropostController extends Controller
 
         $errors = array();
 
-        if ( ! $content )  {
+        if ( ! strlen( $content ) )  {
             $errors[] = "本文を入力してください"; 
         } else if ( strlen( $content ) > 140 ) {
             $errors[] = "本文は140文字以内で入力してください";         
@@ -124,14 +117,12 @@ class MicropostController extends Controller
         // 投稿失敗時、編集画面を表示
         return $this->render( array (   
             'micropost' => $micropost,
-            'errors'   => $errors,
+            'errors'    => $errors,
             'message'   => $message,
             '_token'    => $this->generateCsrfToken( 'micropost/edit' ),
         ), 'edit' );
     }
 
-=======
->>>>>>> 2ccd99e5fbdc06e6007a2de694fad0e8e9fc195d
     public function delete( $params )
     {   
         
