@@ -73,11 +73,25 @@ class MicropostController extends Controller
             ->fetchMicropostById( $params['id'] );
 
         return $this->render ( array(
+<<<<<<< HEAD
             'micropost' => $micropost,
+=======
+<<<<<<< HEAD
+            'micropost' => $micropost,
+=======
+            'content'    => $micropost['content'],
+            'user_name'  => $micropost['user_name'],
+            'created_at' => $micropost['created_at'],
+>>>>>>> 2ccd99e5fbdc06e6007a2de694fad0e8e9fc195d
+>>>>>>> 48fc3697f77dbf366211949fea5f6aa7a18e700c
             '_token'    => $this->generateCsrfToken( 'micropost/edit' ),
         ) );  
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 48fc3697f77dbf366211949fea5f6aa7a18e700c
     public function update( $params )
     {
         if ( ! $this->request->isPost() ) {
@@ -123,6 +137,11 @@ class MicropostController extends Controller
         ), 'edit' );
     }
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 2ccd99e5fbdc06e6007a2de694fad0e8e9fc195d
+>>>>>>> 48fc3697f77dbf366211949fea5f6aa7a18e700c
     public function delete( $params )
     {   
         
