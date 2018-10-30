@@ -104,7 +104,7 @@ class Micropost extends Model
 
     public function update( $current_user_id, $micropost_id, $content )
     {
-        $sql = "
+        $sql = "            
             UPDATE micropost 
                 SET content = :content
                 WHERE id = :micropost_id
